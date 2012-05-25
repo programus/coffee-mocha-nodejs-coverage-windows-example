@@ -15,6 +15,7 @@ coverage: compile
 clean:
 	rm -rf lib-cov
 	rm -rf lib-js
+	rm -f $(REPORT_FILE)
 
 .PHONY: test-all
 
