@@ -1,0 +1,6 @@
+.nodester.rc
+/node_modules
+lib-js
+lib-cov
+coverage.html
+

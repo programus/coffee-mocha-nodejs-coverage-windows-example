@@ -1,0 +1,8 @@
+{
+    "name":               "coffee-mocha-nodejs-coverage-windows-example"
+  , "version":            "0.0.1"
+  , "private":            true
+  , "dependencies": {
+    "chai":             "1.0.1"
+  }
+}
