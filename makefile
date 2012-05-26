@@ -4,8 +4,10 @@ RMV=node $(RMJS)
 # change this if using linux or others
 BROWSE=start
 
+all: | test-all coverage
+
 # use this to cross platform
-tool.rmdir:
+$(RMJS):
 	@echo 'var f=require("fs"),t=require("path");var r=function(a){var b=f.readdirSync(a);for(var c=0;c<b.length;c++){var d=b[c];if(d!=="."&&d!=".."){d=t.join(a,d);if(f.statSync(d).isDirectory()){r(d)}else{try{f.unlinkSync(d)}catch(e){}}}}try{f.rmdirSync(a)}catch(e){}};try{r(process.argv[2])}catch(e){}' > $(RMJS)
 
 # use this to cross platform
@@ -13,36 +15,41 @@ rmtools:
 	@coffee -e "require('fs').unlink 'rmdir.js'"
 
 test-all:
-	mocha --compilers coffee:coffee-script
+	@echo 'Testing...'
+	@mocha --compilers coffee:coffee-script
 
-compile-coffee: tool.rmdir
+compile-coffee: $(RMJS)
 	@$(RMV) lib-js
-	coffee -o lib-js -c lib
+	@echo 'CoffeeScript -> JavaScript compiling...'
+	@coffee -o lib-js -c lib
+	@$(RMV) -p
+
+clean-compile:
 	@$(RMV) -p
 
 jscoverage:
-	jscoverage --no-highlight lib-js lib-cov
+	@jscoverage --no-highlight lib-js lib-cov
 
 mocha-html-cov:
-	mocha --compilers coffee:coffee-script -R html-cov > $(REPORT_FILE)
+	@echo 'Testing and generating coverage report...'
+	@mocha --compilers coffee:coffee-script -R html-cov > $(REPORT_FILE)
 
 clean-coverage:
 	@$(RMV) lib-js
 	@$(RMV) lib-cov
 
 open-coverage:
+	@echo 'Openning report in your default browser...'
 	@$(BROWSE) $(REPORT_FILE)
 
-compile: | tool.rmdir compile-coffee rmtools
-
-coverage: | tool.rmdir compile-coffee jscoverage mocha-html-cov clean-coverage rmtools open-coverage
-
-clean: tool.rmdir
-	@$(RMV) -p
-	@$(RMV) lib-cov
-	@$(RMV) lib-js
+clean-report:
 	@$(RMV) $(REPORT_FILE)
-	@make rmtools
 
-.PHONY: test-all
+compile: | $(RMJS) compile-coffee rmtools
+
+coverage: | $(RMJS) compile-coffee jscoverage mocha-html-cov clean-coverage rmtools open-coverage
+
+clean: | $(RMJS) clean-compile clean-coverage clean-report rmtools
+
+.PHONY: all test-all compile-coffee clean-compile jscoverage mocha-html-cov clean-coverage open-coverage clean-report compile coverage clean rmtoos
 
