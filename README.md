@@ -3,6 +3,12 @@ coffee+mocha+nodejs+coverage work on windows example
 
 CoffeeScript + mocha + node.js + coverage under windows example
 
+## Prerequisite
+
+Ensure all dependency packages are installed. Now only `chai` is the dependency. 
+
+You can also just run `npm install` after cloned this repository to automatically install all dependencies. 
+
 ## Run test
 
 From command line:
