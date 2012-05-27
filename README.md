@@ -3,6 +3,8 @@ coffee+mocha+nodejs+coverage work on windows example
 
 CoffeeScript + mocha + node.js + coverage under windows example
 
+详细说明请见我的[中文博客](http://programus.github.com/blog/2012/05/26/coffee-mocha-coverage-node-under-windows/)。
+
 ## Prerequisite
 
 ### Package dependencies
